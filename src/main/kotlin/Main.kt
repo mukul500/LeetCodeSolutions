@@ -1,10 +1,8 @@
 import strings.LongestSubstringWithoutRepeatingChar
+import strings.MinimumWindowSubstring
 
 fun main(args: Array<String>) {
 
-    val longestSubstringWithoutRepeatingChar = LongestSubstringWithoutRepeatingChar()
-
-
-    val answer = longestSubstringWithoutRepeatingChar.lengthOfLongestSubstring("abcabcbb")
-    println(answer)
+    val solution = MinimumWindowSubstring()
+    println(solution.minWindow("ADOBECODEBANC", "ABC"))
 }
