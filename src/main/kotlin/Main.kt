@@ -1,10 +1,7 @@
-import strings.LongestPalindromicSubstring
-import strings.LongestSubstringWithoutRepeatingChar
-import strings.MinimumWindowSubstring
-import strings.StringToInteger
+import strings.*
 
 fun main(args: Array<String>) {
 
-    val solution = LongestPalindromicSubstring()
-    println(solution.longestPalindrome("aaaa"))
+    val solution = FindAllAnagramsInAString()
+    println(solution.findAnagrams("bb", "aa"))
 }
