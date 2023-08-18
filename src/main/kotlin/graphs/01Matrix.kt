@@ -1,70 +1,62 @@
 package graphs
 
+import java.util.LinkedList
+import java.util.Queue
+
 class ZeroOneMatrix {
 
+
     fun updateMatrix(matrix: Array<IntArray>): Array<IntArray> {
-        val newMatrix = Array(matrix.size) {
-            IntArray(matrix[0].size) {
-                Int.MAX_VALUE
-            }
-        }
 
 
+        //We Create Neighbour Cell Directions Right, Left, Up and Down
+        val directions = arrayOf(Pair(0, 1), Pair(0, -1), Pair(1, 0), Pair(-1, 0))
+
+
+        // We Create a Queue to store the cells with 0, So that we can perform BFS on them and update the distance of the neighbours
+        val bfsQueue: Queue<Pair<Int, Int>> = LinkedList()
+
+        //We Traverse the matrix and add the cells with 0 to the queue and update the other cells to Int.MAX_VALUE
         for (i in matrix.indices) {
             for (j in matrix[0].indices) {
                 if (matrix[i][j] == 0) {
-                    newMatrix[i][j] = 0
+                    bfsQueue.add(Pair(i, j))
                 } else {
-                    val visitedNodes = mutableSetOf<Pair<Int, Int>>()
-                    val queue = mutableListOf<Pair<Int, Int>>()
-                    val distanceFromZero = breadthFirstSearchElements(matrix, i, j, visitedNodes, queue, newMatrix, 0)
-                    queue.clear()
-                    visitedNodes.clear()
+                    matrix[i][j] = Int.MAX_VALUE
                 }
             }
         }
 
-        return newMatrix
-    }
 
-    fun breadthFirstSearchElements(
-        matrix: Array<IntArray>,
-        row: Int,
-        col: Int,
-        visitedNodes: MutableSet<Pair<Int, Int>>,
-        queue: MutableList<Pair<Int, Int>>,
-        newMatrix: Array<IntArray>,
-        distance: Int
-    ) {
-        if (row < 0 || row >= matrix.size || col < 0 || col >= matrix[0].size || visitedNodes.contains(
-                Pair(
-                    row,
-                    col
-                )
-            )
-        ) {
-            return
-        } else {
-            if (matrix[row][col] == 0) {
-                newMatrix[row][col] = distance
-                return
+        //We perform BFS on the cells with 0 and update the distance of the neighbours
+        while (bfsQueue.isNotEmpty()) {
+            //We get the current cell
+            val currentCell = bfsQueue.poll()
+            val currentRow = currentCell.first
+            val currentColumn = currentCell.second
+
+            //We traverse the neighbours of the current cell
+            for (direction in directions) {
+                //We calculate the neighbour cell
+                val neighbourRow = currentRow + direction.first
+                val neighbourColumn = currentColumn + direction.second
+
+
+                //We Calculate if the neighbour cell is valid or not
+                val isValidCell =
+                    neighbourRow >= 0 && neighbourRow < matrix.size && neighbourColumn >= 0 && neighbourColumn < matrix[0].size
+
+                //If the cell is valid and the distance of the neighbour cell is greater than the distance of the current cell + 1
+                if (isValidCell && matrix[currentRow][currentColumn] + 1 < matrix[neighbourRow][neighbourColumn]) {
+                    //We update the distance of the neighbour cell and add it to the queue
+                    matrix[neighbourRow][neighbourColumn] = matrix[currentRow][currentColumn] + 1
+                    //We add the neighbour cell to the queue
+                    bfsQueue.add(Pair(neighbourRow, neighbourColumn))
+                }
             }
-            visitedNodes.add(Pair(row, col))
-            queue.add(Pair(row + 1, col))
-            queue.add(Pair(row - 1, col))
-            queue.add(Pair(row, col + 1))
-            queue.add(Pair(row, col - 1))
-
-            return breadthFirstSearchElements(
-                matrix,
-                queue[0].first,
-                queue[0].second,
-                visitedNodes,
-                queue,
-                newMatrix,
-                distance + 1
-            )
         }
+        //We return the matrix
+        return matrix
     }
 
 }
