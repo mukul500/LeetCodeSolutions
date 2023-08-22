@@ -12,7 +12,7 @@ class Node(var `val`: Int) {
 class CloneGraph {
     fun cloneGraph(node: Node?): Node? {
 
-        val newNodes: HashMap<Node, Node> = HashMap()
+        val newNodes: HashMap<Int, Node> = HashMap()
         val queue: Queue<Node> = LinkedList()
         if (node == null) {
             return null
@@ -25,14 +25,14 @@ class CloneGraph {
             val currentNode = queue.poll()
 
             //If the Copy of the nodes Doesn't exist, we create a new node and add it to the map
-            if (!newNodes.containsKey(currentNode)) {
+            if (!newNodes.containsKey(currentNode.`val`)) {
                 //We create a new node
                 val node = Node(currentNode.`val`)
                 //We create a new list of neighbors
                 node.neighbors = ArrayList()
 
                 //We add the node to the map
-                newNodes[currentNode] = node
+                newNodes[currentNode.`val`] = node
             }
 
             //We get the neighbors of the current node
@@ -47,7 +47,7 @@ class CloneGraph {
 
 
                     //If the Copy of the nodes Doesn't exist, we create a new node and add it to the map
-                    if (!newNodes.containsKey(it)) {
+                    if (!newNodes.containsKey(it.`val`)) {
 
                         //We add the node to the queue for Breadth First Search
                         queue.add(it)
@@ -58,30 +58,30 @@ class CloneGraph {
                         neighbourNewNode.neighbors = ArrayList()
 
                         //We add the Copied node to the map
-                        newNodes[it] = neighbourNewNode
+                        newNodes[it.`val`] = neighbourNewNode
                         //We add the Copied node to the neighbors of the current node
-                        val list = newNodes[currentNode]?.neighbors?.toMutableList()
+                        val list = newNodes[currentNode.`val`]?.neighbors?.toMutableList()
                         list?.add(neighbourNewNode)
 
                         //We update the neighbors of the current node
-                        newNodes[currentNode]?.neighbors = list as ArrayList<Node?>
+                        newNodes[currentNode.`val`]?.neighbors = list as ArrayList<Node?>
 
                         //If the neighbour node copy exists, we add the neighbour node to the neighbors of the current node
                     }else{
 
                         //We get the current node from the map
-                        val list = newNodes[currentNode]?.neighbors?.toMutableList()
+                        val list = newNodes[currentNode.`val`]?.neighbors?.toMutableList()
 
                         //We add the Copied node to the neighbors of the current node
-                        list?.add(newNodes[it])
+                        list?.add(newNodes[it.`val`])
 
                         //We update the neighbors of the current node
-                        newNodes[currentNode]?.neighbors = list as ArrayList<Node?>
+                        newNodes[currentNode.`val`]?.neighbors = list as ArrayList<Node?>
                     }
                 }
             }
 
         }
-        return newNodes[node]
+        return newNodes[node.`val`]
     }
 }
