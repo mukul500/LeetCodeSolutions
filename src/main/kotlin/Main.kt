@@ -1,15 +1,22 @@
-import array.SpiralMatrix
-import binarysearch.BinarySearch
-import binarysearch.FirstBadVersion
-import binarysearch.MaximumProfitInJobScheduling
-import binarysearch.SearchInRotatedSortedArray
-import graphs.CourseSchedule
-import graphs.ZeroOneMatrix
-import strings.*
+import stack.MinStack
+import tree.BinaryTreeLevelOrderTraversel
+import tree.TreeNode
 
 fun main(args: Array<String>) {
 
-    val solution = CourseSchedule()
 
-    print(solution.canFinish(2, arrayOf(intArrayOf(1, 0), intArrayOf(0, 1))))
+    val solution = BinaryTreeLevelOrderTraversel()
+    val root = TreeNode(1).apply {
+        left = TreeNode(2).apply {
+            left = TreeNode(4)
+        }
+        right = TreeNode(3).apply {
+            right = TreeNode(5)
+        }
+    }
+
+    val result = solution.levelOrder(root)
+    println(result)
+
+
 }
