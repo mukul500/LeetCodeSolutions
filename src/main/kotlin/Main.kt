@@ -1,22 +1,14 @@
+import array.AbsoluteSort
 import stack.MinStack
+import strings.BinaryAddition
 import tree.BinaryTreeLevelOrderTraversel
 import tree.TreeNode
 
 fun main(args: Array<String>) {
 
 
-    val solution = BinaryTreeLevelOrderTraversel()
-    val root = TreeNode(1).apply {
-        left = TreeNode(2).apply {
-            left = TreeNode(4)
-        }
-        right = TreeNode(3).apply {
-            right = TreeNode(5)
-        }
-    }
-
-    val result = solution.levelOrder(root)
-    println(result)
-
+    val solution  = AbsoluteSort()
+    val A = intArrayOf(1,2,3,4,5,6)
+    println(solution.findAbsoluteValues(A))
 
 }

@@ -9,6 +9,7 @@ class KClosestPointsToOrigin {
         val queue: PriorityQueue<PointsData> = PriorityQueue { data1, data2 ->
             data2.distance - data1.distance
         }
+
 //
 //       return  points.sortedBy {
 //            ( it[0] * it[0]) + (it[1] * it[1])
