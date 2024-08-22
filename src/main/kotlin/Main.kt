@@ -1,14 +1,20 @@
 import array.AbsoluteSort
+import binarysearch.*
+import dp.CoinChange
+import dp.CoinChangeBFS
+import dp.HouseRobber
+import hashing.`Group Anagrams`
+import hashing.`Word Pattern`
+import map.MyHashMap
 import stack.MinStack
 import strings.BinaryAddition
+import strings.LongestPalindromeSubString
 import tree.BinaryTreeLevelOrderTraversel
 import tree.TreeNode
 
 fun main(args: Array<String>) {
 
-
-    val solution  = AbsoluteSort()
-    val A = intArrayOf(1,2,3,4,5,6)
-    println(solution.findAbsoluteValues(A))
-
+   val pattern  = arrayOf(0).toIntArray()
+    val hash = HouseRobber()
+    println(hash.rob(pattern))
 }

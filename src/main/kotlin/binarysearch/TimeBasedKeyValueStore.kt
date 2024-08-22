@@ -34,8 +34,6 @@ class TimeBasedKeyValueStore {
             timeMap[timestamp] = value
             timeBasedKeyMap[key] = timeMap
         }
-
-
     }
 
     fun get(key: String, timestamp: Int): String {

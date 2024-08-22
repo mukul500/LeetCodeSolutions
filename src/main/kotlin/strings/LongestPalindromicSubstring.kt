@@ -1,5 +1,7 @@
 package strings
 
+import java.lang.StringBuilder
+
 class LongestPalindromicSubstring {
     fun longestPalindrome(s: String): String {
 
@@ -58,6 +60,48 @@ class LongestPalindromicSubstring {
         longestPalindrome = s.substring(longestPalindromeLeftIndex, longestPalindromeRightIndex + 1)
         return longestPalindrome
 
+    }
+
+}
+
+class LongestPalindromeSubString {
+
+    private var palindromeLeftIndex = 0
+    private var palindromeRightIndex = 0
+    fun longestPalindrome(s: String): String {
+        s.forEachIndexed { index, _ ->
+            var leftPointer = index
+            var rightPointer = index
+            while (leftPointer >= 0 && rightPointer < s.length) {
+                if (s[leftPointer] == s[rightPointer]) {
+                    if (rightPointer - leftPointer > palindromeRightIndex - palindromeLeftIndex) {
+                        palindromeRightIndex = rightPointer
+                        palindromeLeftIndex = leftPointer
+                    }
+                } else {
+                    break
+                }
+                leftPointer--
+                rightPointer++
+            }
+            leftPointer = index
+            rightPointer = index + 1
+            while (leftPointer >= 0 && rightPointer < s.length) {
+                if (s[leftPointer] == s[rightPointer]) {
+                    if (rightPointer - leftPointer > palindromeRightIndex - palindromeLeftIndex) {
+                        palindromeRightIndex = rightPointer
+                        palindromeLeftIndex = leftPointer
+                    }
+                } else {
+                    break
+                }
+                leftPointer--
+                rightPointer++
+            }
+
+
+        }
+        return s.substring(palindromeLeftIndex, palindromeRightIndex + 1)
     }
 
 }
