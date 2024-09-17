@@ -27,7 +27,7 @@ class HouseRobber {
             return dp[index]!!
         }
 
-        nums.forEachIndexed { index, i ->
+        nums.take(2).forEachIndexed { index, i ->
             val max = dfs(index)
             maximum = maxOf(max, maximum)
         }
