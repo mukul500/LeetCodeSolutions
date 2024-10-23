@@ -37,3 +37,20 @@ class ReverseLinkedList {
         return frontNode
     }
 }
+
+class ReverseLinkedList2 {
+    fun reverseList(head: ListNode?): ListNode? {
+        if (head == null) return null
+        var reversedList = ListNode(head.`val`)
+        reversedList.next = null
+        var next = head.next
+        while (next != null) {
+            val temp = next.next
+            next.next = reversedList
+            reversedList = next
+            next = temp
+
+        }
+        return reversedList
+    }
+}

@@ -53,4 +53,20 @@ class LinkedListCycle {
         //We return false
         return false
     }
+
+
+    fun hasCycle2(head: ListNode?): Boolean {
+
+        if (head == null) return false
+        var runner = head.next?.next
+        var walker = head.next
+
+        while (runner != null) {
+            if (walker == runner) return true
+            walker = walker?.next
+            runner = runner.next?.next
+
+        }
+        return false
+    }
 }
