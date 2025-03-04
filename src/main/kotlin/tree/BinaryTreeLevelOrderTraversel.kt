@@ -31,8 +31,7 @@ class BinaryTreeLevelOrderTraversel {
         val traverselOrder: ArrayList<List<Int>> = ArrayList()
         val queue: Queue<TreeNode> = LinkedList<TreeNode>()
 
-        if (root == null)
-            return traverselOrder.toList()
+        if (root == null) return traverselOrder.toList()
         else {
             traverselOrder.add(listOf(root.`val`))
             queue.offer(root)
@@ -42,13 +41,13 @@ class BinaryTreeLevelOrderTraversel {
         while (queue.isNotEmpty()) {
             val currentLevelNode = mutableListOf<TreeNode>()
             val currentLevelValue = mutableListOf<Int>()
-            while (queue.isNotEmpty()){
+            while (queue.isNotEmpty()) {
                 val node = queue.poll()
-                if(node.left !=null){
+                if (node.left != null) {
                     currentLevelNode.add(node.left!!)
                     currentLevelValue.add(node.left!!.`val`)
                 }
-                if(node.right != null){
+                if (node.right != null) {
                     currentLevelNode.add(node.right!!)
                     currentLevelValue.add(node.right!!.`val`)
                 }
@@ -57,10 +56,68 @@ class BinaryTreeLevelOrderTraversel {
                 queue.offer(it)
             }
 
-            if(currentLevelValue.isNotEmpty()){
+            if (currentLevelValue.isNotEmpty()) {
                 traverselOrder.add(currentLevelValue)
             }
         }
         return traverselOrder
     }
+}
+
+class BinaryTreeLevelOrderTraversel2 {
+
+    fun levelOrder(root: TreeNode?): List<List<Int>> {
+
+        val list = ArrayList<List<Int>>()
+        if (root == null) return list
+        val queue: Queue<TreeNode> = LinkedList()
+        queue.add(root)
+        list.add(listOf(root.`val`))
+        while (queue.isNotEmpty()) {
+            val currentLevel: Queue<TreeNode> = LinkedList()
+            val leftRightList = mutableListOf<Int>()
+            while (queue.isNotEmpty()) {
+                val head = queue.poll()
+                if (head.left != null) {
+                    leftRightList.add(head.left!!.`val`)
+                    currentLevel.add(head.left)
+                }
+                if (head.right != null) {
+                    leftRightList.add(head.right!!.`val`)
+                    currentLevel.add(head.right)
+                }
+
+            }
+            if (leftRightList.isNotEmpty()) {
+                list.add(leftRightList)
+            }
+            currentLevel.forEach {
+                queue.add(it)
+            }
+
+        }
+        return list
+    }
+}
+
+class BinaryTreeLevelOrderTraversel3 {
+
+    fun levelOrder(root: TreeNode?): List<List<Int>> {
+
+        val finalList: MutableList<MutableList<Int>> = mutableListOf()
+        fun traverseTree(node: TreeNode?, level: Int) {
+            if (node == null) return
+            if (level >= finalList.size) {
+                finalList.add(level, mutableListOf())
+            }
+            finalList[level].add(node.`val`)
+            traverseTree(node = node.left, level = level + 1)
+            traverseTree(node = node.right, level = level + 1)
+        }
+
+        traverseTree(node = root, 0)
+        return finalList
+
+    }
+
 }

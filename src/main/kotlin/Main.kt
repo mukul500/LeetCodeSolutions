@@ -1,5 +1,8 @@
+import array.OrangesRotting
+import array.OrangesRottingBFS
 import linkedlist.ListNode
 import linkedlist.RemoveNthNodeFromLinkedList
+import linkedlist.ReorderList
 import linkedlist.ReverseLinkedList2
 import tree.PathSum2
 import tree.`Sum Root to Leaf Numbers`
@@ -8,8 +11,13 @@ import tree.TreeNode
 
 fun main(args: Array<String>) {
 
-    val removeNthNodeFromLinkedList = RemoveNthNodeFromLinkedList()
-    val listNode = ListNode(1).apply { next = ListNode(2) }
-    println(removeNthNodeFromLinkedList.removeNthFromEnd(listNode, 1))
+    val orangeRotting = OrangesRottingBFS()
+    var grid = arrayOf(
+        intArrayOf(2, 2),
+        intArrayOf(1, 1),
+        intArrayOf(0, 0),
+        intArrayOf(2, 0)
+    )
+    println(orangeRotting.orangesRotting(grid))
 
 }
