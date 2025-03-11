@@ -1,6 +1,5 @@
 package graphs
 
-import java.util.*
 
 class CourseSchedule {
 
@@ -10,54 +9,55 @@ class CourseSchedule {
         val neighbors: MutableList<Node> = mutableListOf()
     )
 
-    fun canFinish(numCourses: Int, prerequisites: Array<IntArray>): Boolean {
 
+    fun canFinish(numCourses: Int, prerequisites: Array<IntArray>): Boolean {
         if (prerequisites.isEmpty()) {
             return true
         }
-
-        val nodes = mutableMapOf<Int, Node>()
-        for (i in prerequisites.indices) {
-            val currentPre = prerequisites[i][0]
-            if (currentPre !in nodes) {
-                val neighbourNode = Node(prerequisites[i][1])
-                val headNode = Node(currentPre, mutableListOf(neighbourNode))
-                nodes[prerequisites[i][1]] = neighbourNode
-                nodes[currentPre] = headNode
-                println("currentPre doesn't  $currentPre exists")
+        val uniqueNodes: MutableMap<Int, Node> = mutableMapOf()
+        for (pre in prerequisites) {
+            val vertexNode = if (uniqueNodes.containsKey(pre[0])) {
+                uniqueNodes[pre[0] ]!!
             } else {
-                val neighbourNode = Node(prerequisites[i][1])
-                val currentNode = nodes[currentPre]
-                currentNode?.neighbors?.add(neighbourNode)
-                println("currentPre $currentPre ${currentNode}")
+                val node = Node(pre[0] )
+                uniqueNodes[pre[0] ] = node
+                node
             }
+            val edgeNode = if (uniqueNodes.containsKey(pre[1] )) {
+                uniqueNodes[pre[1]]!!
+            } else {
+                val node = Node(pre[1] )
+                uniqueNodes[pre[1] ] = node
+                node
+            }
+
+            vertexNode.neighbors.add(edgeNode)
         }
 
-        val visited = mutableSetOf<Int>()
-        val queue: Queue<Node> = LinkedList()
-        val firstKey = nodes.keys.first()
-        queue.add(nodes[firstKey])
-
-        print(queue.peek())
-
-        var counter = 1
-        while (queue.isNotEmpty()) {
-
-            val currentNode = queue.poll()
-            visited.add(currentNode.hashCode())
-            val neighbors = currentNode.neighbors
-
-            println("Visiting ${currentNode.value}")
-            neighbors.forEach {
-                if (it.hashCode() !in visited) {
-                    queue.add(it)
-                }
+        val visitedNodes: MutableMap<Int, NodeStatus> = mutableMapOf()
+        val topologicalOrder: MutableList<Int> = mutableListOf()
+        fun topLogicalSort(node: Node): Boolean {
+            if (visitedNodes[node.value] == NodeStatus.VISITING) return false
+            if (visitedNodes[node.value] == NodeStatus.VISITED) return true
+            visitedNodes[node.value] = NodeStatus.VISITING
+            for (neighbour in node.neighbors) {
+                if (!topLogicalSort(neighbour)) return false
             }
-            counter++
+            visitedNodes[node.value] = NodeStatus.VISITED
+            topologicalOrder.add(node.value)
+            return true
         }
 
-        return counter <= numCourses
+        for (node in uniqueNodes.values) {
+            if (!visitedNodes.containsKey(node.value)) {
+                if (!topLogicalSort(node)) return false
+            }
+        }
+        return topologicalOrder.size <= numCourses
+    }
 
+    enum class NodeStatus {
+        NOT_VISITED, VISITED, VISITING
     }
 
 }

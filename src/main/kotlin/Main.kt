@@ -1,23 +1,16 @@
 import array.OrangesRotting
 import array.OrangesRottingBFS
+import graphs.DetectCycleInGraph
 import linkedlist.ListNode
 import linkedlist.RemoveNthNodeFromLinkedList
 import linkedlist.ReorderList
 import linkedlist.ReverseLinkedList2
-import tree.PathSum2
-import tree.`Sum Root to Leaf Numbers`
-import tree.SymmetricTree
-import tree.TreeNode
+import tree.*
 
 fun main(args: Array<String>) {
 
-    val orangeRotting = OrangesRottingBFS()
-    var grid = arrayOf(
-        intArrayOf(2, 2),
-        intArrayOf(1, 1),
-        intArrayOf(0, 0),
-        intArrayOf(2, 0)
+    val detectCycle = DetectCycleInGraph()
+    val edges = listOf<Pair<Int, Int>>(
     )
-    println(orangeRotting.orangesRotting(grid))
-
+    println(detectCycle.hasCycle(edges))
 }
