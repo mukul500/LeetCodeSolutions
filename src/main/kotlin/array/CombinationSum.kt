@@ -2,7 +2,9 @@ package array
 
 class CombinationSum {
 
-    fun combinationSum(candidates: IntArray, target: Int): List<List<Int>> {
+    private var finalCombinationSum: MutableList<List<Int>> = mutableListOf()
+
+    fun combinationSumOld(candidates: IntArray, target: Int): List<List<Int>> {
 
         //Result Element
         val result = mutableListOf<List<Int>>()
@@ -46,5 +48,35 @@ class CombinationSum {
         candidates.sort()
         backTrack(0, 0, mutableListOf())
         return result
+    }
+
+
+    fun combinationSum(candidates: IntArray, target: Int): List<List<Int>> {
+        for (i in candidates.indices) {
+            val list = listOf<Int>(candidates[i])
+            findCombinations(
+                currentTraverseArray = list,
+                candidates = candidates,
+                index = i,
+                currentTotal = candidates[i],
+                target = target
+            )
+        }
+        return finalCombinationSum
+    }
+
+    private fun findCombinations(
+        currentTraverseArray: List<Int>, candidates: IntArray, index: Int, currentTotal: Int, target: Int
+    ) {
+        if (index > candidates.size) return
+        if (currentTotal > target) return
+        if (currentTotal == target) {
+            finalCombinationSum.addAll(listOf(currentTraverseArray))
+        }
+        for (i in index until candidates.size) {
+            val newList = currentTraverseArray.toMutableList()
+            newList.add(candidates[i])
+            findCombinations(newList, candidates, i, currentTotal + candidates[i], target)
+        }
     }
 }
