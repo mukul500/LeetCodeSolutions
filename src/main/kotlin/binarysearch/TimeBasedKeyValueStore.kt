@@ -104,3 +104,64 @@ class TimeBasedKeyValueStore {
         return value
     }
 }
+
+
+class TimeMap() {
+
+
+    var map = mutableMapOf<String, MutableList<TimeValue>>()
+
+    fun set(key: String, value: String, timestamp: Int) {
+
+        if (map.contains(key)) {
+            val timeValue = findExactOrNull(map[key]!!, timestamp)
+            if (timeValue != null) {
+                timeValue.value = value
+                timeValue.timeStamp = timestamp
+            }
+        } else {
+            val timeValue = TimeValue(value, timestamp)
+            val newList = mutableListOf<TimeValue>()
+            newList.add(timeValue)
+            map[key] = newList
+        }
+
+    }
+
+
+    private fun findExactOrNull(list: MutableList<TimeValue>, timestamp: Int): TimeValue? {
+
+        var leftPointer = 0
+        var rightPointer = list.size - 1
+
+        while (leftPointer <= rightPointer) {
+            val middle = (leftPointer + rightPointer) / 2
+            val middleVal = list[middle]
+            if (middleVal.timeStamp == timestamp) return middleVal
+            else if (middleVal.timeStamp > timestamp) leftPointer = middle - 1
+            else rightPointer = middle + 1
+        }
+        return null
+    }
+
+    fun findNearestOrNull(list: List<TimeValue>, timestamp: Int): String? {
+        return null
+    }
+
+
+    fun get(key: String, timestamp: Int): String {
+
+        if (map.contains(key)) {
+            var timeValue = findExactOrNull(map[key]!!, timestamp)
+            println("TimeValue ${timeValue}")
+        }
+        return ""
+    }
+
+
+    data class TimeValue(
+        var value: String,
+        var timeStamp: Int
+    )
+
+}

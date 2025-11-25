@@ -85,3 +85,56 @@ class CloneGraph {
         return newNodes[node.`val`]
     }
 }
+
+
+
+
+/**
+ * Definition for a Node.
+ * class Node(var `val`: Int) {
+ *     var neighbors: ArrayList<Node?> = ArrayList<Node?>()
+ * }
+ */
+
+
+class CloneGP2 {
+    fun cloneGraph(node: Node?): Node? {
+        if(node == null) return null
+
+        val queue : Queue<Node> = LinkedList()
+        val visitedNode = mutableMapOf<Int, Node> ()
+
+        queue.add(node)
+        val head  = Node(`val` = node.`val`)
+        visitedNode.put(head.`val`, head)
+
+
+        while(queue.isNotEmpty()){
+
+            val currentNode = queue.poll()
+            val copyNode: Node
+            if(visitedNode.contains(currentNode.`val`)){
+                copyNode = visitedNode.get(currentNode.`val`)!!
+            }else{
+                copyNode = Node(currentNode.`val`)
+                visitedNode.put(copyNode.`val` , copyNode)
+            }
+
+
+            currentNode.neighbors.forEach{ neighbor ->
+
+
+                val copyNeighborNode : Node
+                if(visitedNode.contains(neighbor!!.`val`)){
+                    copyNeighborNode = visitedNode.get(neighbor!!.`val`)!!
+                }else{
+                    copyNeighborNode = Node(neighbor!!.`val`)
+                    visitedNode.put(copyNeighborNode!!.`val` , copyNeighborNode)
+                    queue.add(neighbor)
+                }
+                copyNode.neighbors.add(copyNeighborNode)
+            }
+        }
+        return head
+    }
+}

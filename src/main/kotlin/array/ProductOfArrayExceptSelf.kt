@@ -40,3 +40,58 @@ class ProductOfArrayExceptSelf2 {
 //        }
 //    }
 }
+
+
+/**
+ * Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i].
+ *
+ * The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
+ *
+ * You must write an algorithm that runs in O(n) time and without using the division operation.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: nums = [1,2,3,4]
+ * Output: [24,12,8,6]
+ * Example 2:
+ *
+ * Input: nums = [-1,1,0,-3,3]
+ * Output: [0,0,9,0,0]
+ */
+class ProductOfArrayExceptSelf3 {
+
+
+    fun productExceptSelf(nums: IntArray): IntArray {
+        val rightSideProduct = IntArray(nums.size) { 1 }
+        val leftSideProduct = IntArray(nums.size) { 1 }
+        val finalList = IntArray(nums.size) { 1 }
+
+        for (i in nums.indices) {
+            val leftProduct = leftSideProduct.getOrDefault(i - 1, 1)
+            val leftNumber = nums.getOrDefault(i - 1, 1)
+            leftSideProduct[i] = leftProduct * leftNumber
+        }
+
+        for (i in nums.size -1 downTo 0) {
+            val rightProduct = rightSideProduct.getOrDefault(i + 1, 1)
+            val rightNumber = nums.getOrDefault(i + 1, 1)
+            rightSideProduct[i] = rightProduct * rightNumber
+        }
+
+        for (i in nums.indices) {
+            finalList[i] =leftSideProduct[i] * rightSideProduct[i]
+        }
+        return finalList
+    }
+
+    private fun IntArray.getOrDefault(index: Int, defaultValue: Int): Int {
+        return if (index >= 0 && index < this.size) {
+            this[index]
+        } else {
+            defaultValue
+        }
+    }
+
+}

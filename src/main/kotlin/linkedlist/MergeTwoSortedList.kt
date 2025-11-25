@@ -52,4 +52,9 @@ class MergeTwoSortedList {
         //We return the sorted listl
         return sortedList.next
     }
+
+
+    /**
+     * Second time solution
+     */
 }
