@@ -205,3 +205,68 @@ class OrangesRottingBFS {
 
 
 }
+
+
+class OrangeRottingRevisit {
+
+    private val directions: List<Pair<Int, Int>> = listOf(
+        Pair(1, 0), Pair(-1, 0), Pair(0, 1), Pair(0, -1)
+
+    )
+
+    private val rottenQueue: Queue<Pair<Int, Int>> = LinkedList()
+    private var days = 0
+
+    fun orangesRotting(grid: Array<IntArray>): Int {
+        for (row in grid.indices) {
+            for (col in grid[row].indices) {
+                if (grid[row][col] == 2) {
+                    rottenQueue.offer(Pair(row, col))
+                }
+            }
+        }
+
+        while (!rottenQueue.isEmpty()) {
+
+            var rottenOranges = rottenQueue.size
+            var isAnyItemAffected = false
+            while (rottenOranges > 0) {
+                val (currentRow, currentCol) = rottenQueue.poll()
+                for ((dx, dy) in directions) {
+                    val newRow = currentRow + dx
+                    val newCol = currentCol + dy
+                    if (grid.isValidOrange(newRow, newCol)) {
+                        isAnyItemAffected = true
+                        grid[newRow][newCol] = 2
+                        rottenQueue.offer(Pair(newRow, newCol))
+                    }
+                }
+                rottenOranges--
+            }
+            if (isAnyItemAffected) {
+                days++
+            }
+        }
+
+        for (row in grid.indices) {
+            for (col in grid[row].indices) {
+                if (grid[row][col] == 1) {
+                    days = -1
+                }
+            }
+        }
+
+        return days
+
+    }
+
+
+    fun Array<IntArray>.isValidOrange(row: Int, col: Int): Boolean {
+        return this.isValidIndex(row, col) && this[row][col] == 1
+    }
+
+    fun Array<IntArray>.isValidIndex(row: Int, col: Int): Boolean {
+        return (row >= 0 && row < this.size && col >= 0 && col < this[0].size)
+    }
+
+}

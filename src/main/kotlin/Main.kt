@@ -12,8 +12,6 @@ import binarysearch.MedianOfTwoSortedArray
 import tree.*
 
 fun main(args: Array<String>) {
-    var nQueen = NQueen()
-    val finalBoard = nQueen.solveNQueens(4)
-    println(finalBoard)
+
 
 }

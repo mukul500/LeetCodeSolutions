@@ -43,7 +43,7 @@ class CloneGraph {
             neighbors.forEach {
 
                 //
-                if(it!= null) {
+                if (it != null) {
 
 
                     //If the Copy of the nodes Doesn't exist, we create a new node and add it to the map
@@ -67,7 +67,7 @@ class CloneGraph {
                         newNodes[currentNode.`val`]?.neighbors = list as ArrayList<Node?>
 
                         //If the neighbour node copy exists, we add the neighbour node to the neighbors of the current node
-                    }else{
+                    } else {
 
                         //We get the current node from the map
                         val list = newNodes[currentNode.`val`]?.neighbors?.toMutableList()
@@ -87,8 +87,6 @@ class CloneGraph {
 }
 
 
-
-
 /**
  * Definition for a Node.
  * class Node(var `val`: Int) {
@@ -99,42 +97,79 @@ class CloneGraph {
 
 class CloneGP2 {
     fun cloneGraph(node: Node?): Node? {
-        if(node == null) return null
+        if (node == null) return null
 
-        val queue : Queue<Node> = LinkedList()
-        val visitedNode = mutableMapOf<Int, Node> ()
+        val queue: Queue<Node> = LinkedList()
+        val visitedNode = mutableMapOf<Int, Node>()
 
         queue.add(node)
-        val head  = Node(`val` = node.`val`)
+        val head = Node(`val` = node.`val`)
         visitedNode.put(head.`val`, head)
 
 
-        while(queue.isNotEmpty()){
+        while (queue.isNotEmpty()) {
 
             val currentNode = queue.poll()
             val copyNode: Node
-            if(visitedNode.contains(currentNode.`val`)){
+            if (visitedNode.contains(currentNode.`val`)) {
                 copyNode = visitedNode.get(currentNode.`val`)!!
-            }else{
+            } else {
                 copyNode = Node(currentNode.`val`)
-                visitedNode.put(copyNode.`val` , copyNode)
+                visitedNode.put(copyNode.`val`, copyNode)
             }
 
 
-            currentNode.neighbors.forEach{ neighbor ->
+            currentNode.neighbors.forEach { neighbor ->
 
 
-                val copyNeighborNode : Node
-                if(visitedNode.contains(neighbor!!.`val`)){
+                val copyNeighborNode: Node
+                if (visitedNode.contains(neighbor!!.`val`)) {
                     copyNeighborNode = visitedNode.get(neighbor!!.`val`)!!
-                }else{
+                } else {
                     copyNeighborNode = Node(neighbor!!.`val`)
-                    visitedNode.put(copyNeighborNode!!.`val` , copyNeighborNode)
+                    visitedNode.put(copyNeighborNode!!.`val`, copyNeighborNode)
                     queue.add(neighbor)
                 }
                 copyNode.neighbors.add(copyNeighborNode)
             }
         }
         return head
+    }
+}
+
+
+class CloneGP3 {
+
+    /**
+     * Returns a Deep copy of the graph
+     */
+
+    private val visitedSet = mutableSetOf<Node>()
+
+    private val copyNodesMap = mutableMapOf<Int, Node>()
+    fun cloneGraph(node: Node?): Node? {
+        if (node == null) return null
+        bfs(node)
+        return copyNodesMap[node.`val`]
+    }
+
+    private fun bfs(node: Node) {
+
+        val queue: Queue<Node> = LinkedList()
+        queue.add(node)
+        while (queue.isNotEmpty()) {
+            val currentNode = queue.poll()
+            if (visitedSet.contains(currentNode)) continue
+
+            val newNode = copyNodesMap.getOrDefault(currentNode.`val`, Node(currentNode.`val`))
+            for (neighbour in currentNode.neighbors) {
+                val newChildNode = copyNodesMap.getOrDefault(neighbour!!.`val`, Node(neighbour.`val`))
+                copyNodesMap[neighbour.`val`] = newChildNode
+                newNode.neighbors.add(newChildNode)
+                queue.add(neighbour)
+            }
+            visitedSet.add(currentNode)
+            copyNodesMap[currentNode.`val`] = newNode
+        }
     }
 }

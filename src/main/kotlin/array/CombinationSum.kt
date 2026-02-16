@@ -80,3 +80,33 @@ class CombinationSum {
         }
     }
 }
+
+class CombinationSunNew {
+
+    private val finalList: MutableList<MutableList<Int>> = mutableListOf()
+    fun combinationSumOld(candidates: IntArray, target: Int): List<List<Int>> {
+        for (i in candidates.indices) {
+            dfs(i, mutableListOf<Int>(), candidates, target)
+        }
+
+        return finalList
+
+    }
+
+    fun dfs(currentIndex: Int, currentArray: MutableList<Int>, fullArray: IntArray, target: Int) {
+        if (currentIndex < 0 || currentIndex > fullArray.size) return
+        val currentItem = fullArray[currentIndex]
+        if (target - currentItem < 0) return
+        if (target - currentItem == 0) {
+            currentArray.add(currentItem)
+            finalList.add(currentArray)
+            return
+        }
+        for (i in currentIndex until fullArray.size) {
+            val deepCopy = currentArray.toMutableList()
+            deepCopy.add(currentItem)
+            dfs(currentIndex = i, currentArray = deepCopy, fullArray = fullArray, target = target - currentItem)
+        }
+    }
+
+}

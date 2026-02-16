@@ -1,5 +1,6 @@
 package dp
 
+import java.util.*
 import kotlin.math.max
 
 class HouseRobber {
@@ -7,6 +8,7 @@ class HouseRobber {
     fun rob(nums: IntArray): Int {
         var maximum = -1
         val dp: MutableMap<Int, Int> = mutableMapOf()
+        val queue = PriorityQueue<Int>( compareByDescending{it})
 
         fun dfs(index: Int): Int {
             if (index >= nums.size) return 0

@@ -52,3 +52,32 @@ class LongestSubstringWithoutRepeatingChar {
     }
 
 }
+
+
+fun lengthOfLongestSubstring(s: String): Int {
+
+
+    val charSet = mutableSetOf<Char>()
+    var leftPointer = 0
+    var rightPointer = 0
+    var longestSubString = Int.MIN_VALUE
+
+    while (leftPointer <= rightPointer && rightPointer < s.length) {
+
+        val rightChar = s[rightPointer]
+        val leftChar = s[leftPointer]
+
+        if (charSet.contains(rightChar)) {
+            charSet.remove(leftChar)
+            leftPointer++
+            continue
+        } else {
+            charSet.add(rightChar)
+            rightPointer++
+        }
+        val currentLongest = (rightPointer - leftPointer)
+
+        longestSubString = maxOf(longestSubString, currentLongest)
+    }
+    return longestSubString
+}
