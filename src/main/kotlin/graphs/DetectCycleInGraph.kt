@@ -52,3 +52,54 @@ class DetectCycleInGraph {
         NOT_VISITED, VISITED, VISITING
     }
 }
+
+
+class DetectCycleInGraph2 {
+
+
+    fun canFinish(numCourses: Int, prerequisites: Array<IntArray>): Boolean {
+        val uniqueNodes = buildGraph(numCourses, prerequisites)
+        val currentState = mutableMapOf<Node, NodeStatus>()
+        for ((_, node) in uniqueNodes) {
+            if (hasCycle(node, currentState)) return false
+        }
+        return true
+    }
+
+    fun buildGraph(numCourses: Int, prerequisites: Array<IntArray>): Map<Int, Node> {
+        val uniqueNodes = mutableMapOf<Int, Node>()
+
+        // Ensure all courses exist in the graph, even if they have no prerequisites
+        for (i in 0 until numCourses) {
+            uniqueNodes.getOrPut(i) { Node(i) }
+        }
+
+        for ((course, prereq) in prerequisites) {
+            val courseNode = uniqueNodes[course]!!
+            val prereqNode = uniqueNodes[prereq]!!
+
+            // Edge direction: prereq → course
+            // "To take course, you must first finish prereq"
+            prereqNode.neighbors.add(courseNode)
+        }
+
+        return uniqueNodes
+    }
+
+
+    fun hasCycle(node: Node, currentState: MutableMap<Node, NodeStatus>): Boolean {
+        if (currentState[node] == NodeStatus.VISITING) return true
+        else if (currentState[node] == NodeStatus.VISITED) return false
+        currentState[node] = NodeStatus.VISITING
+        for (neighbor in node.neighbors) {
+            val result = neighbor?.let { hasCycle(it, currentState) }
+            if (result == true) return true
+        }
+        currentState[node] = NodeStatus.VISITED
+        return false
+    }
+
+    enum class NodeStatus {
+        NOT_VISITED, VISITED, VISITING
+    }
+}
